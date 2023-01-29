@@ -2,6 +2,8 @@ from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk, PhotoImage, Toplevel
+import ttkbootstrap as tb
+import customtkinter as ctk
 from threading import Thread
 import threading
 import requests
@@ -36,7 +38,7 @@ def sendMessage(pn, em, title, body):
   response = requests.request("POST", url, headers = headers, json = payload)
   return response
 
-window=Tk ()
+window=tb.Window(themename = "darkly")
 window.withdraw()
 window.title('Productify')
 window.geometry('1430x750')
@@ -51,8 +53,8 @@ phonenumber = StringVar()
 class login():
 
     def __init__(self):
-        self.top = tk.Toplevel()
-        self.top.geometry("500x400")
+        self.top = tb.Toplevel()
+        self.top.geometry("500x500")
         self.top.title("Pomodoro Timer")
   
         self.style = ttk.Style()
@@ -64,8 +66,8 @@ class login():
         self.tabs.pack(fill = "both", pady = 10, expand = True)
         
 
-        self.tab1 = ttk.Frame(self.tabs, width = 500, height = 400)
-        self.tab2 = ttk.Frame(self.tabs, width = 300, height = 400)
+        self.tab1 = ttk.Frame(self.tabs, width = 500, height = 500)
+        self.tab2 = ttk.Frame(self.tabs, width = 500, height = 500)
 
         
 
@@ -74,13 +76,13 @@ class login():
 
         #self.grid_layout = ttk.Frame(self.tab1)
 
-        self.enterUserLabel = ttk.Label(self.tab1, text = "Enter Username:", font = ("Ubuntu", 16))
+        self.enterUserLabel = tb.Label(master = self.tab1, text = "Enter Username:", font = ("Ubuntu", 16),  )
         self.enterUserLabel.pack(side = TOP, pady = 30)
 
         self.enterUserArea = Text(self.tab1, height = 2, width = 30)
         self.enterUserArea.pack(side = TOP)
 
-        self.enterPassLabel = ttk.Label(self.tab1, text = "Enter Password:", font = ("Ubuntu", 16))
+        self.enterPassLabel = ttk.Label(self.tab1, text = "Enter Password:", font = ("Ubuntu", 16),   )
         self.enterPassLabel.pack(side = TOP, pady = 30)
 
         self.enterPassArea = Text(self.tab1, height = 2, width = 30)
@@ -88,40 +90,40 @@ class login():
         
         self.submitInfo = ttk.Button(self.tab1, text = "Submit Info", command = self.login)
         self.submitInfo.pack(side = TOP, pady = 20)
-
-        self.createUserLabel = ttk.Label(self.tab2, text = "Create Username:", font = ("Ubuntu", 16))
+    
+        self.createUserLabel = ttk.Label(self.tab2, text = "Create Username:", font = ("Ubuntu", 16),   )
         self.createUserLabel.pack(side = TOP, anchor = 'nw', pady = 10)
 
-        self.createUserArea = Text(self.tab2, height = 1, width = 30)
+        self.createUserArea = Text(self.tab2, height = 1, width = 30) 
         self.createUserArea.pack(side = TOP, anchor = 'nw')
 
-        self.createPassLabel = ttk.Label(self.tab2, text = "Create Password:", font = ("Ubuntu", 16))
+        self.createPassLabel = ttk.Label(self.tab2, text = "Create Password:", font = ("Ubuntu", 16),  )
         self.createPassLabel.pack(side = TOP, anchor = 'nw', pady = 10)
 
         self.createPassArea = Text(self.tab2, height = 1, width = 30)
         self.createPassArea.pack(side = TOP, anchor = 'nw')
 
-        self.createPassAgainLabel = ttk.Label(self.tab2, text = "Enter Password again:", font = ("Ubuntu", 16))
+        self.createPassAgainLabel = ttk.Label(self.tab2, text = "Enter Password again:", font = ("Ubuntu", 16), )
         self.createPassAgainLabel.pack(side = TOP, anchor = 'nw', pady = 10)
 
         self.createPassAgainArea= Text(self.tab2, height = 1, width = 30)
         self.createPassAgainArea.pack(side = TOP, anchor = 'nw')
 
-        self.createEmailLabel = ttk.Label(self.tab2, text = "Create Email:", font = ("Ubuntu", 16))
+        self.createEmailLabel = ttk.Label(self.tab2, text = "Create Email:", font = ("Ubuntu", 16),  )
         self.createEmailLabel.pack(side = TOP, anchor = 'nw', pady = 10)
         
         self.createEmailArea = Text(self.tab2, height = 1, width = 30)
         self.createEmailArea.pack(side = TOP, anchor = 'nw')
 
-        self.createPhoneNLabel = ttk.Label(self.tab2, text = "Create Phone #:", font = ("Ubuntu", 16))
+        self.createPhoneNLabel = ttk.Label(self.tab2, text = "Create Phone #:", font = ("Ubuntu", 16), )
         self.createPhoneNLabel.pack(side = TOP, anchor = 'nw', pady = 10)
 
         self.createPhoneNArea = Text(self.tab2, height = 1, width = 30)
         self.createPhoneNArea.pack(side = TOP, anchor = 'nw')
 
         self.submitAccInfo = ttk.Button(self.tab2, text = "Submit Info",  command = self.registerUser)
-        self.submitAccInfo.place(x = "350", y = "150")
-
+        self.submitAccInfo.place(x = "320", y = "150")
+        
         self.top.mainloop()
 
     def registerUser(self):
