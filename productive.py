@@ -12,6 +12,7 @@ import random
 import time
 import plyer
 from plyer import notification 
+from pathlib import Path
 
 def sendMessage(pn, em, title, body):
   api_key = "pk_prod_HF62V1AYE64SNFQTXTF3YE9MRD0F"
@@ -42,7 +43,8 @@ window=tb.Window(themename = "darkly")
 window.withdraw()
 window.title('Productify')
 window.geometry('1430x750')
-window.resizable(0,0)
+window.resizable(0,0) 
+#window.attributes('-fullscreen',True)
 
 email = StringVar()
 phonenumber = StringVar()
@@ -55,7 +57,7 @@ class login():
     def __init__(self):
         self.top = tb.Toplevel()
         self.top.geometry("500x500")
-        self.top.title("Pomodoro Timer")
+        self.top.title("Login Window")
   
         self.style = ttk.Style()
         self.style.configure("TNotebook.Tab", font = ("Ubuntu", 16))
@@ -121,23 +123,55 @@ class login():
         self.createPhoneNArea = Text(self.tab2, height = 1, width = 30)
         self.createPhoneNArea.pack(side = TOP, anchor = 'nw')
 
-        self.submitAccInfo = ttk.Button(self.tab2, text = "Submit Info",  command = self.registerUser)
+        self.submitAccInfo = ttk.Button(self.tab2, text = "Submit Info",  command = self.verifyUser)
         self.submitAccInfo.place(x = "320", y = "150")
         
         self.top.mainloop()
 
-    def registerUser(self):
-        
+    def verifyUser(self):
         if (len(self.createUserArea.get("1.0", END))==1 or len(self.createPassArea.get("1.0", END))==1 
         or len(self.createPassAgainArea.get("1.0", END))==1 or len(self.createEmailArea.get("1.0", END))==1 or len(self.createPhoneNArea.get("1.0", END))==1):
             messagebox.showwarning(title="Missing Information", message="Please enter all required fields")
             return
-        if self.createPassAgainArea.get("1.0",END) == self.createPassArea.get("1.0",END):
-            file=open(self.createUserArea.get("1.0", END).strip()+".txt", "w")
-            file.write(self.createUserArea.get("1.0", END) + "" + self.createPassArea.get("1.0", END) + "" + self.createEmailArea.get("1.0", END) + "" +  self.createPhoneNArea.get("1.0", END))
-            messagebox.showinfo(title="Done", message="Registration complete!")
-            file.close()
+        if self.createPassAgainArea.get("1.0",END).strip() == self.createPassArea.get("1.0",END).strip(): # add else
+
+            self.verify = tb.Toplevel()
+            self.verify.geometry("500x300")
+            self.verify.title("Verification Code")
+            self.verify.grab_set()
+            self.verifyLabel = ttk.Label(self.verify, text = "Enter 6-digit code sent to phone/email", font = ("Ubuntu", 16), )
+            self.verifyLabel.pack(side = TOP, pady = 5)
+            self.verifyBox = Text(self.verify, height = 1, width = 30)
+            self.verifyBox.pack(side = TOP, pady = 50)
+            self.code =  str(random.choice(range(100000, 999999)))
+            sendMessage(self.createPhoneNArea.get("1.0", END), self.createEmailArea.get("1.0", END), "Verification code", "Your code is " + self.code)
+            self.submitCode = ttk.Button(self.verify, text = "Submit Info",  command = self.checkCode)
+            self.submitCode.pack(side = TOP, pady = 50)
+            
+        else:
+            messagebox.showwarning(title="Matching", message="Passwords do not match!")
+            return
+    def checkCode(self):
+        
+        if(self.verifyBox.get("1.0", END).strip() == str(self.code)):
+            self.registerUser()
+            self.verify.destroy()
+        else:
+            messagebox.showwarning(title="Incorrect code", message="Code is incorrect, redo authentication. ")
+            self.verify.destroy()
+        
+            
+    def registerUser(self):
+            filename = self.createUserArea.get("1.0", END).strip()+".txt"
+            if(Path(filename).is_file() == False):
+                file=open(filename, "w")
+                file.write(self.createUserArea.get("1.0", END) + "" + self.createPassArea.get("1.0", END) + "" + self.createEmailArea.get("1.0", END) + "" +  self.createPhoneNArea.get("1.0", END))
+                messagebox.showinfo(title="Done", message="Registration complete!")
+                file.close()
+            else:
+                messagebox.showerror(title="Exists", message="Username Already Exists.")
     
+
     def login(self):
         if len(self.enterUserArea.get("1.0", END)) == 1 or len(self.enterPassArea.get("1.0", END)) == 1:
             messagebox.showwarning(title="Missing Information", message="Please enter all required fields")
@@ -205,13 +239,38 @@ frame5=Frame(window, height = 310, width = 350, highlightbackground='black',high
 frame5.place(x = 10, y = 20)
 
 
-# frame6=Frame(window, height = 130, width = 350, highlightbackground ='black',highlightthickness= 5)
-# frame6.place(x=10, y = 348)
+frame6=Frame(window, height = 150, width = 340, highlightbackground ='black',highlightthickness= 5)
+frame6.place(x=10, y = 336) 
 
-# darkMode =Button(frame6, text="Light Mode ", width = 17, height = 1, font=("poppins bold", 18))
-# darkMode.place(x= 50, y = 65)
-# lightMode = Button(frame6, text="Dark Mode ", width = 17, height = 1, font=("poppins bold", 18))
-# lightMode.place(x= 50, y = 5)
+# def customize(): 
+#         button.config(bg="black", activebackground="black")
+#         root.config(bg="black")
+#         button_mode=False
+#     else:
+#         button.config(bg="white", activebackground="white")
+#         root.config(bg="white")
+#         button_mode=True 
+#window=tb.Window(themename = "minty")
+def darkMode():
+    # if window(themename = "minty") :
+        window.style.theme_use("darkly")
+    # elif window(themename = "darkly"):
+    #     window.style.theme_use("minty")
+
+def lightMode():
+        window.style.theme_use("minty")
+  
+
+
+darkMode = Button(frame6, text="Dark Mode ", width = 17, height = 1, font=("poppins bold", 18), command=darkMode)
+darkMode.place(x= 50, y = 20)
+lightMode = Button(frame6, text="Light Mode ", width = 17, height = 1, font=("poppins bold", 18), command=lightMode)
+lightMode.place(x= 50, y = 70)
+
+#write a function to change the tb.Window(themename = "minty") to tb.Window(themename = "darkly")
+#changeMode.config(command = customize)
+#write code for the customize function above
+
 
 
 
