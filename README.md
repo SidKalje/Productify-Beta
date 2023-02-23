@@ -12,3 +12,4 @@ What we learned: We learned how to use the Courier Send API and Twilio to send n
 
 What's next for Productify: Next, we can use databases to store login information, and update the UI to look cleaner and more modern
 
+Others can contribute by doing the things above^^
