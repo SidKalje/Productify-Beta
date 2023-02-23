@@ -144,7 +144,7 @@ class login():
             self.verifyBox = Text(self.verify, height = 1, width = 30)
             self.verifyBox.pack(side = TOP, pady = 50)
             self.code =  str(random.choice(range(100000, 999999)))
-            sendMessage(self.createPhoneNArea.get("1.0", END), self.createEmailArea.get("1.0", END), "Verification code", "Your code is " + self.code)
+            sendMessage(self.createPhoneNArea.get("1.0", END), self.createEmailArea.get("1.0", END), "Verification code", "Your code is " + self.code) #integration of courier
             self.submitCode = ttk.Button(self.verify, text = "Submit Info",  command = self.checkCode)
             self.submitCode.pack(side = TOP, pady = 50)
             
@@ -353,7 +353,7 @@ def finishedTask():
     if lb.size() == 0:
         # messagebox.showinfo("Hooray! You finished your tasks!")
         messagebox.showinfo("Congratulations", "Good Job on Finishing your tasks!")
-        sendMessage(str(phonenumber), str(email), "Productify ", "Congrats on Finishing all your tasks for the Day!")
+        sendMessage(str(phonenumber), str(email), "Productify ", "Congrats on Finishing all your tasks for the Day!") #integration of courier
 
 lb = Listbox(frame2, width=25,height=16, font=('Times',18), bd=0,fg='#464646',highlightthickness=0,selectbackground='#a6a6a6',activestyle="none")
 
@@ -406,7 +406,7 @@ delTask_btn = Button(button_frame,text='Delete Task',font=('times 14'), bg='#ff8
 
 delTask_btn.pack(fill=BOTH, expand=True, side=LEFT)
 
-def createQuote():
+def createQuote(): #integration of quoteapi
     url = "https://type.fit/api/quotes"
     response = requests.request("GET", url)
     data = json.loads(response.text)
@@ -428,7 +428,7 @@ def regenquote():
     quoteLabel.config(text = str(quote) + "\n\n-    " + str(author))
     ##print(str(phonenumber))
     ##print(str(email))
-    requestid = sendMessage(str(phonenumber), str(email), "Inspirational Quote", "As " + author + " once said: \n" + quote )
+    requestid = sendMessage(str(phonenumber), str(email), "Inspirational Quote", "As " + author + " once said: \n" + quote ) #integration of courier
     ##print(requestid)
 
 frame3=Frame(window,  height = 220, width = 950, highlightbackground='black',highlightthickness = 5 )
@@ -520,11 +520,11 @@ class PomodoroTimer:
                 self.pomodoro_counter_label.config(text = f"Pomodoros: {self.pomodoros}")
                 if self.pomodoros % 4 == 0:
                     self.tabs.select(2)
-                    rid = sendMessage(str(phonenumber), str(email), "Pause Work!", "Good Job! Take a Short Break!")
+                    rid = sendMessage(str(phonenumber), str(email), "Pause Work!", "Good Job! Take a Short Break!") #integration of courier
                     #print(rid)
                 else:
                     self.tabs.select(1)
-                    rid = sendMessage(str(phonenumber), str(email), "Pause Work!", "Good Job! Take a Short Break!")
+                    rid = sendMessage(str(phonenumber), str(email), "Pause Work!", "Good Job! Take a Short Break!") #integration of courier
                     #print(rid)
                 self.start_timer()
         elif timer_id == 2:
@@ -537,7 +537,7 @@ class PomodoroTimer:
                 timeLeft-=1
             if not self.stopped or self.skipped:
                 self.tabs.select(0)
-                rid = sendMessage(phonenumber, email, "Break End", "Your Break Is Over :( Please Get Back to Work!")
+                rid = sendMessage(phonenumber, email, "Break End", "Your Break Is Over :( Please Get Back to Work!")#integration of courier
                 #print(rid)
                 self.start_timer()
         elif timer_id==3:
@@ -550,7 +550,7 @@ class PomodoroTimer:
                 timeLeft-=1
             if not self.stopped or self.skipped:
                 self.tabs.select(0)
-                rid = sendMessage(phonenumber, email, "Break End", "Your Break Is Over :( Please Get Back to Work!")
+                rid = sendMessage(phonenumber, email, "Break End", "Your Break Is Over :( Please Get Back to Work!")#integration of courier
                 #print(rid)
                 self.start_timer()
                 
